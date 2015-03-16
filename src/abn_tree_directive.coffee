@@ -105,6 +105,10 @@ module.directive 'abnTree',['$timeout',($timeout)->
       if branch isnt selected_branch
          select_branch(branch)
 
+    scope.user_clicks_branch_action = (branch)->
+      if branch.onPerformAction?
+          $timeout ->
+            branch.onPerformAction(branch)
 
     get_parent = (child)->
       parent = undefined
@@ -207,6 +211,8 @@ module.directive 'abnTree',['$timeout',($timeout)->
           else
             tree_icon = attrs.iconExpand 
 
+        if branch.onPerformAction and attrs.iconAction
+          action_icon = attrs.iconAction
 
         #
         # append to the list of "Tree Row" objects:
@@ -217,6 +223,7 @@ module.directive 'abnTree',['$timeout',($timeout)->
           label     : branch.label
           classes   : branch.classes
           tree_icon : tree_icon
+          action_icon : action_icon
           visible   : visible
 
         #
