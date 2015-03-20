@@ -100,6 +100,10 @@ module.directive 'abnTree',['$timeout',($timeout)->
             $timeout ->
               scope.onSelect({branch:branch})
 
+    scope.user_clicks_expand = (branch)->
+      branch.expanded = !branch.expanded
+      if branch.onExpand?
+        branch.onExpand(branch)
 
     scope.user_clicks_branch = (branch)->
       if branch isnt selected_branch
@@ -326,10 +330,10 @@ module.directive 'abnTree',['$timeout',($timeout)->
               p
 
 
-        tree.add_branch = (parent,new_branch)->
+        tree.add_branch = (parent,new_branch,expand)->
           if parent?
             parent.children.push new_branch
-            parent.expanded = true
+            parent.expanded = parent.expanded || expand != false
           else
             scope.treeData.push new_branch
           #tree.select new_branch
