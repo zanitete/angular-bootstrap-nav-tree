@@ -100,6 +100,12 @@ module.directive 'abnTree',['$timeout',($timeout)->
             $timeout ->
               scope.onSelect({branch:branch})
 
+    scope.user_clicks_item = (branch)->
+      if branch.noLeaf?
+        scope.user_clicks_expand(branch)
+      else
+        scope.user_clicks_branch(branch)
+
     scope.user_clicks_expand = (branch)->
       branch.expanded = !branch.expanded
       if branch.onExpand?

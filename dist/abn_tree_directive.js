@@ -8,7 +8,7 @@
     '$timeout', function($timeout) {
       return {
         restrict: 'E',
-        template: "<ul class=\"nav nav-list nav-pills nav-stacked abn-tree\">\n  <li ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-animate=\"'abn-tree-animate'\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'') + ' ' +row.classes.join(' ')\" class=\"abn-tree-row\"><a ng-click=\"user_clicks_branch(row.branch)\" class=\"indented\"><i ng-class=\"row.tree_icon\" ng-click=\"user_clicks_expand(row.branch)\" class=\"tree-icon\"></i><span class=\"tree-label\">{{ row.label }}</span></a><i ng-class=\"row.action_icon\" ng-click=\"user_clicks_branch_action(row.branch)\" class=\"action-icon\"></i></li>\n</ul>",
+        template: "<ul class=\"nav nav-list nav-pills nav-stacked abn-tree\">\n  <li ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-animate=\"'abn-tree-animate'\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'') + ' ' +row.classes.join(' ')\" class=\"abn-tree-row\"><a ng-click=\"user_clicks_item(row.branch)\" class=\"indented\"><i ng-class=\"row.tree_icon\" class=\"tree-icon\"></i><span class=\"tree-label\">{{ row.label }}</span></a><i ng-class=\"row.action_icon\" ng-click=\"user_clicks_branch_action(row.branch)\" class=\"action-icon\"></i></li>\n</ul>",
         replace: true,
         scope: {
           treeData: '=',
@@ -100,6 +100,13 @@
                   });
                 }
               }
+            }
+          };
+          scope.user_clicks_item = function(branch) {
+            if (branch.noLeaf != null) {
+              return scope.user_clicks_expand(branch);
+            } else {
+              return scope.user_clicks_branch(branch);
             }
           };
           scope.user_clicks_expand = function(branch) {
